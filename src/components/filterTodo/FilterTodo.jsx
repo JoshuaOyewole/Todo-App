@@ -26,7 +26,7 @@ function FilterTodo(props) {
    
     if (!title == "") {
       const result = todos.filter(todo => {
-        return todo.title.toLowerCase().includes(searchField);
+        return todo.title.toLowerCase().includes(searchField.toLowerCase());
       })  
       updateLoadingState(false)
       updateTodos(result);
