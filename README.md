@@ -20,9 +20,13 @@ To install all the dependencies needed for the project
 In .env file, kindly input the following variables.
 
 apiKey
+
 storageBucket
+
 messagingSenderId
+
 appId
+
 measurementId
 
 ### `yarn dev`
