@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import PrimaryBtn from '../button/Button';
+import { db } from "../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 function TodoForm(props) {
     const { cancelAddTodoForm } = props;
@@ -10,16 +12,26 @@ function TodoForm(props) {
     const [dueDate, setDueDate] = useState("");
 
 
-    const handleForm = (e) => {
+    const handleForm = async (e) => {
         setLoading(true);
         e.preventDefault();
-        console.log({title,description,dueDate});
-
-        //Close the Form after successfully sending
+        if (!title == "" && !description == "" && !dueDate == "") {
+            try {
+                await addDoc(collection(db, "todos"), {
+                    title,
+                    description,
+                    dueDate
+                });
+                setLoading(false);
+                
+            } catch (error) {
+                console.log(error);
+            }
+        }
         cancelAddTodoForm()
     }
 
-   
+
     return (
         <div className="w-full sm:w-4/5 lg:w-full xl:w-3/4">
             <form name="todo" onSubmit={handleForm}>
@@ -30,7 +42,7 @@ function TodoForm(props) {
                             type="text"
                             name="title"
                             value={title}
-                            onChange={(e)=>setTitle(e.target.value)}
+                            onChange={(e) => setTitle(e.target.value)}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Title"
                             required
                         />
@@ -46,31 +58,31 @@ function TodoForm(props) {
                             name="description"
                             rows="4"
                             value={description}
-                            onChange={(e)=>setDescription(e.target.value)}
+                            onChange={(e) => setDescription(e.target.value)}
                             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write a short description...">
                         </textarea>
 
                     </div>
 
                     <div className="w-full sm:w-1/2 lg:w-1/3">
-                        <label 
-                            htmlFor="dueDate" 
+                        <label
+                            htmlFor="dueDate"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Due Date
+                            Due Date
                         </label>
-                        <input 
-                            type="date" 
+                        <input
+                            type="date"
                             value={dueDate}
-                            onChange={(e)=>setDueDate(e.target.value)}
-                            className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Title" 
-                            required 
+                            onChange={(e) => setDueDate(e.target.value)}
+                            className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Title"
+                            required
                         />
 
                     </div>
                     <div>
                         <button type="button" className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => cancelAddTodoForm()}>Cancel</button>
 
-                        {loading ? <PrimaryBtn /> :
+                        {loading ? <PrimaryBtn value='Sending' /> :
                             (<input type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" value="Add Task" />)}
                     </div>
                 </div>
