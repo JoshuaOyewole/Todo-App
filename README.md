@@ -3,13 +3,14 @@ Kreatix Technologies Frontend Assessment by Joshua Oyewole
 This project was bootstrapped with [Vite](https://vitejs.dev/guide/).
 
 
-Preview Link [Link](https://joshuaoyewole-kreatix-assessment.netlify.app/).
+Preview Link [https://joshuaoyewole-kreatix-assessment.netlify.app/](https://joshuaoyewole-kreatix-assessment.netlify.app/).
 
 
 ## Available Scripts
 
-#### Kindly Clone the Repo using
+
 ### `git clone https://github.com/JoshuaOyewole/Todo-App.git`
+Clone the Repo using to your local machine
 
 ### `yarn install`
 To install all the dependencies needed for the project
